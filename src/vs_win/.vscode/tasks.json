@@ -1,0 +1,86 @@
+{
+    "version": "2.0.0",
+    "windows": {
+
+    },
+    "tasks": [
+        {
+            "label": "Build IPA_projekt_2024",
+            "type": "shell",
+            "command": "g++",
+            "args": [
+                "-g",
+                "-mavx",
+                "-O3",
+                "-std=c++11",
+                "-fpic",
+                "-o",
+                "retinanetpost.exe",
+                "-DDEBUG", 
+                "retinanetpost_asm.o",
+                "retinanetpost.cpp",
+                "src/utils.cpp",
+                "src/prior_boxes.cpp",
+                "src/reader.cpp",
+                "-Iinclude",
+                "-L..\\lib",
+                "-I..\\include",
+                "-lopencv_world451"
+            ],
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            },
+            "problemMatcher": [],
+            "dependsOn": [
+                "ASM Part"
+            ],
+            "isBackground": false
+        },
+        {
+            "label": "ASM Part",
+            "type": "shell",
+            "command": "gcc",
+            "args": [
+                "-masm=intel",
+                "-g",
+                "-c",
+                "retinanetpost_asm.s"
+            ],
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            },
+            "problemMatcher": [],
+            "dependsOn": [
+
+            ],
+            "isBackground": false
+        },
+        {
+            "label": "Run",
+            "type": "shell",
+            "command": "retinanetpost.exe",
+            "args": [
+                "input/input.jpg",
+
+                "input/input.txt"
+            ],
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            },
+            "options": {
+                "env": {
+                    "PATH": "${env:PATH};${workspaceFolder}/runtime_lib/"
+                }
+            },
+            
+            "problemMatcher": [],
+            "dependsOn": [
+                "Build IPA_projekt_2024"
+            ],
+            "isBackground": false
+        }
+    ]
+  }
